@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Sync UI sidebar details
  */
 function updateSidebarUI(user) {
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const sidebarAvatar = document.getElementById('sidebar-user-avatar');
   const sidebarName = document.getElementById('sidebar-user-name');
   const sidebarBio = document.getElementById('sidebar-user-bio');
@@ -218,7 +218,7 @@ async function loadSuggestions() {
     res.data.slice(0, 5).forEach(user => {
       const li = document.createElement('li');
       li.className = 'suggestion-item';
-      const avatarSrc = user.profilePic || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+      const avatarSrc = user.profilePic || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
 
       li.innerHTML = `
         <div class="suggest-profile">
@@ -242,7 +242,7 @@ function createPostCard(post) {
   card.className = 'card';
   card.id = `post-${post._id}`;
 
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const authorAvatar = post.userId.profilePic || defaultAvatar;
   const authorName = post.userId.name;
   const dateFormatted = new Date(post.createdAt).toLocaleDateString(undefined, {
@@ -370,7 +370,7 @@ function createCommentElement(comment) {
   const el = document.createElement('div');
   el.className = 'comment-item';
 
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const avatar = comment.userId.profilePic || defaultAvatar;
   const name = comment.userId.name;
   const dateFormatted = new Date(comment.createdAt).toLocaleDateString(undefined, {

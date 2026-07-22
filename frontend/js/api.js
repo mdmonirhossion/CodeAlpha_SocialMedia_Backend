@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
           res.data.forEach(user => {
             const li = document.createElement('li');
             li.className = 'search-item';
-            const avatarSrc = user.profilePic || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+            const avatarSrc = user.profilePic || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
             
             li.innerHTML = `
               <img src="${avatarSrc}" alt="Avatar" class="avatar">

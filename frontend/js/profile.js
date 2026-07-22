@@ -107,7 +107,7 @@ async function loadProfile() {
   
   if (res && res.success) {
     const user = res.data;
-    const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+    const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
     
     // Set UI elements
     document.getElementById('profile-avatar').src = user.profilePic || defaultAvatar;
@@ -193,7 +193,7 @@ function createPostCard(post) {
   card.className = 'card';
   card.id = `post-${post._id}`;
 
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const authorAvatar = post.userId.profilePic || defaultAvatar;
   const authorName = post.userId.name;
   const dateFormatted = new Date(post.createdAt).toLocaleDateString(undefined, {
@@ -313,7 +313,7 @@ function createCommentElement(comment) {
   const el = document.createElement('div');
   el.className = 'comment-item';
 
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const avatar = comment.userId.profilePic || defaultAvatar;
   const name = comment.userId.name;
   const dateFormatted = new Date(comment.createdAt).toLocaleDateString(undefined, {
@@ -374,7 +374,7 @@ function setupProfileEventListeners() {
       const me = getCachedUser();
       if (me) {
         bioInput.value = me.bio || '';
-        avatarPreview.src = me.profilePic || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+        avatarPreview.src = me.profilePic || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
         editModal.classList.remove('hidden');
       }
     });

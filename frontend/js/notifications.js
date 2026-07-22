@@ -127,7 +127,7 @@ function createNotificationItem(notif) {
   const li = document.createElement('li');
   li.className = `notif-item ${notif.isRead ? '' : 'unread'}`;
   
-  const defaultAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+  const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
   const avatar = notif.senderId.profilePic || defaultAvatar;
   const senderName = notif.senderId.name;
   

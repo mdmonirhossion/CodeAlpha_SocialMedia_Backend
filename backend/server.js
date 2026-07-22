@@ -21,6 +21,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 
 
 const app = express();
+app.set('trust proxy', 1); // Trust Render's proxy headers for rate limiting
 const server = http.createServer(app);
 
 // Initialize Socket.io

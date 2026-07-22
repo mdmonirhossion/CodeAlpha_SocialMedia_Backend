@@ -30,7 +30,3 @@ pnpm-debug.log*
 # OS metadata files
 .DS_Store
 Thumbs.db
-
-# Other unrelated projects in the workspace
-verdant-ecommerce/
-verdant-ecommerce.zip

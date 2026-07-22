@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Lite</title>
+  <script>
+    // Immediate redirect based on auth status
+    const token = localStorage.getItem('token');
+    if (token) {
+      window.location.href = '/feed.html';
+    } else {
+      window.location.href = '/login.html';
+    }
+  </script>
+</head>
+<body style="background: #f0f2f5; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+  <div style="text-align: center; color: #1877f2;">
+    <h2>Loading...</h2>
+  </div>
+</body>
+</html>

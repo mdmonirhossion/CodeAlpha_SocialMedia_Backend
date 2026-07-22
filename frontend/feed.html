@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Feed - Facebook Lite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="app-body">
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <a href="/feed.html" class="header-logo" id="nav-logo-link">fb<span>lite</span></a>
+      <div class="search-container">
+        <input type="text" id="global-search-input" placeholder="Search people...">
+        <div id="search-dropdown" class="search-dropdown hidden">
+          <ul id="search-results-list"></ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button id="theme-toggle-btn" class="header-btn" title="Toggle Dark/Light Mode">🌓</button>
+      <a href="/feed.html" class="header-nav-link active" id="nav-home-link" title="Home">🏠 <span class="nav-text">Home</span></a>
+      <a href="#" class="header-nav-link" id="nav-profile-link" title="My Profile">👤 <span class="nav-text">Profile</span></a>
+      
+      <!-- Notifications Badge -->
+      <div class="notification-badge-container">
+        <button id="nav-notifications-btn" class="header-btn" title="Notifications">
+          🔔
+          <span id="notif-count-badge" class="badge hidden">0</span>
+        </button>
+        <!-- Notifications Dropdown -->
+        <div id="notifications-dropdown" class="notifications-dropdown hidden">
+          <div class="dropdown-header">
+            <h3>Notifications</h3>
+            <button id="btn-mark-all-read" class="btn-text">Mark all as read</button>
+          </div>
+          <div class="auth-divider"></div>
+          <ul id="notifications-list" class="dropdown-list">
+            <li class="empty-state">No new notifications</li>
+          </ul>
+        </div>
+      </div>
+
+      <button id="btn-logout" class="header-btn" title="Log Out">🚪 <span class="nav-text">Logout</span></button>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main class="app-main-grid">
+    <!-- Left Sidebar: Quick Profile -->
+    <aside class="sidebar-left">
+      <div class="card profile-quick-card">
+        <div class="quick-avatar-container">
+          <img id="sidebar-user-avatar" src="" alt="Avatar" class="avatar avatar-large">
+        </div>
+        <h3 id="sidebar-user-name">Loading...</h3>
+        <p id="sidebar-user-bio" class="text-muted"></p>
+        <div class="auth-divider"></div>
+        <button id="sidebar-view-profile-btn" class="btn btn-secondary btn-block">View Profile</button>
+      </div>
+      
+      <div class="sidebar-footer">
+        <p>© 2026 Facebook Lite Clone</p>
+      </div>
+    </aside>
+
+    <!-- Middle Section: Create Post & Feed -->
+    <section class="feed-section">
+      <!-- Create Post Box -->
+      <div class="card create-post-card">
+        <div class="create-post-header">
+          <img id="create-post-user-avatar" src="" alt="Avatar" class="avatar">
+          <textarea id="create-post-textarea" placeholder="What's on your mind?"></textarea>
+        </div>
+        
+        <!-- Image Preview Container -->
+        <div id="post-image-preview-container" class="image-preview-container hidden">
+          <img id="post-image-preview" src="" alt="Post image preview">
+          <button id="btn-remove-preview" class="btn-close-circle" type="button">×</button>
+        </div>
+
+        <div class="create-post-footer">
+          <label for="post-image-input" class="post-media-label" id="btn-choose-image">
+            🖼️ Photo
+            <input type="file" id="post-image-input" accept="image/*" class="hidden">
+          </label>
+          <button id="btn-submit-post" class="btn btn-primary">Post</button>
+        </div>
+      </div>
+
+      <!-- Feed Container -->
+      <div id="posts-feed-container" class="posts-feed-container">
+        <!-- Loader -->
+        <div id="feed-loader" class="feed-spinner">
+          <div class="spinner"></div>
+          <p>Loading posts...</p>
+        </div>
+      </div>
+
+      <!-- Load More Section for pagination -->
+      <div class="load-more-container text-center">
+        <button id="btn-load-more-posts" class="btn btn-secondary hidden">Load More Posts</button>
+      </div>
+    </section>
+
+    <!-- Right Sidebar: Suggested People -->
+    <aside class="sidebar-right">
+      <div class="card suggestions-card">
+        <h3>Discover People</h3>
+        <div class="auth-divider"></div>
+        <ul id="suggestions-list" class="suggestions-list">
+          <li class="empty-state">Finding suggestions...</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Comment Modal / Drawer (Sleek Overlay) -->
+  <div id="comments-modal" class="modal-overlay hidden">
+    <div class="modal-content card">
+      <div class="modal-header">
+        <h3>Comments</h3>
+        <button id="btn-close-comments-modal" class="btn-close">×</button>
+      </div>
+      <div class="auth-divider"></div>
+      <div class="comments-modal-body">
+        <div id="modal-comments-list" class="comments-list">
+          <!-- Comments render here -->
+        </div>
+      </div>
+      <div class="auth-divider"></div>
+      <form id="modal-comment-form" class="modal-comment-footer">
+        <input type="hidden" id="modal-comment-post-id">
+        <input type="text" id="modal-comment-input" placeholder="Write a comment..." required>
+        <button type="submit" id="modal-btn-submit-comment" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/feed.js"></script>
+  <script src="/js/notifications.js"></script>
+</body>
+</html>

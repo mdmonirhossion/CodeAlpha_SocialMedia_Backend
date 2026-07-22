@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login or Sign Up - Facebook Lite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <!-- Firebase SDK Compatibility Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <!-- Left side: Branding -->
+    <div class="auth-brand-section">
+      <h1 class="brand-logo">facebook<span>lite</span></h1>
+      <p class="brand-tagline">Connect with friends and the world around you on Facebook Lite.</p>
+    </div>
+
+    <!-- Right side: Auth Cards -->
+    <div class="auth-card-section">
+      <!-- Login Card -->
+      <div id="login-card" class="auth-card active">
+        <form id="login-form">
+          <div class="form-group">
+            <input type="email" id="login-email" placeholder="Email address" required>
+          </div>
+          <div class="form-group form-group-password">
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="button" class="password-toggle-btn hidden" aria-label="Toggle password visibility">👁️</button>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          
+          <div class="auth-divider">Or continue with</div>
+          
+          <button type="button" id="btn-google-login" class="btn btn-google btn-block">
+             Continue with Google
+          </button>
+          
+          <button type="button" id="btn-show-phone" class="btn btn-phone btn-block margin-top-sm">
+             Log In with Phone (OTP)
+          </button>
+          
+          <div class="auth-divider"></div>
+          <button type="button" id="btn-show-register" class="btn btn-success">Create new account</button>
+        </form>
+        <div id="login-error" class="auth-error-msg hidden"></div>
+      </div>
+
+      <!-- Phone Login Card -->
+      <div id="phone-card" class="auth-card hidden">
+        <h2 class="card-title">Phone Login</h2>
+        <p class="card-subtitle">Verify your identity using an SMS OTP code.</p>
+        <div class="auth-divider"></div>
+        
+        <!-- Step 1: Send SMS -->
+        <form id="phone-send-form">
+          <div class="form-group">
+            <input type="tel" id="phone-number" placeholder="Phone Number (with country code, e.g. +88017...)" required>
+          </div>
+          <!-- Recaptcha Container -->
+          <div id="recaptcha-container" class="margin-top-sm"></div>
+          <button type="submit" id="btn-send-code" class="btn btn-primary btn-block margin-top-sm">Send Verification Code</button>
+        </form>
+
+        <!-- Step 2: Verify OTP (Initially Hidden) -->
+        <form id="phone-verify-form" class="hidden">
+          <div class="form-group">
+            <input type="text" id="phone-otp" placeholder="Enter 6-digit OTP code" required>
+          </div>
+          <button type="submit" id="btn-verify-otp" class="btn btn-success btn-block">Verify & Log In</button>
+        </form>
+
+        <div class="auth-divider"></div>
+        <button type="button" id="btn-phone-cancel" class="btn btn-link">Back to email login</button>
+        <div id="phone-error" class="auth-error-msg hidden"></div>
+      </div>
+
+      <!-- Register Card -->
+      <div id="register-card" class="auth-card hidden">
+        <h2 class="card-title">Sign Up</h2>
+        <p class="card-subtitle">It's quick and easy.</p>
+        <div class="auth-divider"></div>
+        <form id="register-form">
+          <div class="form-group">
+            <input type="text" id="register-name" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" id="register-email" placeholder="Email address" required>
+          </div>
+          <div class="form-group form-group-password">
+            <input type="password" id="register-password" placeholder="New password (min 6 chars)" minlength="6" required>
+            <button type="button" class="password-toggle-btn hidden" aria-label="Toggle password visibility">👁️</button>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+          <div class="auth-divider"></div>
+          <button type="button" id="btn-show-login" class="btn btn-link">Already have an account?</button>
+        </form>
+        <div id="register-error" class="auth-error-msg hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

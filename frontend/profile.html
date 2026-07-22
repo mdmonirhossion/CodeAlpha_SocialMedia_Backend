@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Facebook Lite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="app-body">
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <a href="/feed.html" class="header-logo" id="nav-logo-link">fb<span>lite</span></a>
+      <div class="search-container">
+        <input type="text" id="global-search-input" placeholder="Search people...">
+        <div id="search-dropdown" class="search-dropdown hidden">
+          <ul id="search-results-list"></ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button id="theme-toggle-btn" class="header-btn" title="Toggle Dark/Light Mode">🌓</button>
+      <a href="/feed.html" class="header-nav-link" id="nav-home-link" title="Home">🏠 <span class="nav-text">Home</span></a>
+      <a href="#" class="header-nav-link active" id="nav-profile-link" title="My Profile">👤 <span class="nav-text">Profile</span></a>
+      
+      <!-- Notifications Badge -->
+      <div class="notification-badge-container">
+        <button id="nav-notifications-btn" class="header-btn" title="Notifications">
+          🔔
+          <span id="notif-count-badge" class="badge hidden">0</span>
+        </button>
+        <!-- Notifications Dropdown -->
+        <div id="notifications-dropdown" class="notifications-dropdown hidden">
+          <div class="dropdown-header">
+            <h3>Notifications</h3>
+            <button id="btn-mark-all-read" class="btn-text">Mark all as read</button>
+          </div>
+          <div class="auth-divider"></div>
+          <ul id="notifications-list" class="dropdown-list">
+            <li class="empty-state">No new notifications</li>
+          </ul>
+        </div>
+      </div>
+
+      <button id="btn-logout" class="header-btn" title="Log Out">🚪 <span class="nav-text">Logout</span></button>
+    </div>
+  </header>
+
+  <!-- Profile Page Wrapper -->
+  <div class="profile-container">
+    <!-- Header Card: Cover & Avatar -->
+    <div class="card profile-header-card">
+      <div class="cover-photo"></div>
+      <div class="profile-header-info">
+        <div class="profile-avatar-wrapper">
+          <img id="profile-avatar" src="" alt="Avatar" class="profile-avatar-large">
+        </div>
+        <div class="profile-text-details">
+          <h2 id="profile-user-name">Loading Profile...</h2>
+          <p id="profile-user-bio" class="profile-bio-text"></p>
+          <div class="profile-stats">
+            <span id="profile-followers-stat"><strong>0</strong> Followers</span>
+            <span id="profile-following-stat"><strong>0</strong> Following</span>
+          </div>
+        </div>
+        <div class="profile-action-buttons">
+          <!-- Button toggled dynamically -->
+          <button id="btn-follow-toggle" class="btn btn-primary hidden">Follow</button>
+          <button id="btn-edit-profile-trigger" class="btn btn-secondary hidden">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Profile Grid -->
+    <div class="profile-content-grid">
+      <!-- Left sidebar: Bio details -->
+      <aside class="profile-sidebar">
+        <div class="card info-box-card">
+          <h3>Intro</h3>
+          <div class="auth-divider"></div>
+          <ul class="intro-list">
+            <li>📧 <span id="intro-email">Loading...</span></li>
+            <li>📅 Member since <span id="intro-joined">Loading...</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Center column: Posts -->
+      <section class="profile-posts-section">
+        <h3>Posts</h3>
+        <div class="auth-divider"></div>
+        <div id="profile-posts-container" class="posts-feed-container">
+          <div class="feed-spinner" id="profile-posts-loader">
+            <div class="spinner"></div>
+            <p>Loading posts...</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="edit-profile-modal" class="modal-overlay hidden">
+    <div class="modal-content card">
+      <div class="modal-header">
+        <h3>Edit Profile</h3>
+        <button id="btn-close-edit-modal" class="btn-close">×</button>
+      </div>
+      <div class="auth-divider"></div>
+      <form id="edit-profile-form" class="modal-body">
+        <div class="form-group text-center">
+          <img id="edit-avatar-preview" src="" alt="Avatar Preview" class="profile-avatar-large margin-auto">
+          <label for="edit-avatar-input" class="btn btn-secondary margin-top-sm inline-block cursor-pointer">
+            Change Photo
+            <input type="file" id="edit-avatar-input" accept="image/*" class="hidden">
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="edit-bio-textarea">Bio</label>
+          <textarea id="edit-bio-textarea" rows="3" placeholder="Describe yourself..."></textarea>
+        </div>
+        <div class="auth-divider"></div>
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-edit" class="btn btn-secondary">Cancel</button>
+          <button type="submit" id="btn-save-profile" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Comment Modal / Drawer (Sleek Overlay) -->
+  <div id="comments-modal" class="modal-overlay hidden">
+    <div class="modal-content card">
+      <div class="modal-header">
+        <h3>Comments</h3>
+        <button id="btn-close-comments-modal" class="btn-close">×</button>
+      </div>
+      <div class="auth-divider"></div>
+      <div class="comments-modal-body">
+        <div id="modal-comments-list" class="comments-list">
+          <!-- Comments render here -->
+        </div>
+      </div>
+      <div class="auth-divider"></div>
+      <form id="modal-comment-form" class="modal-comment-footer">
+        <input type="hidden" id="modal-comment-post-id">
+        <input type="text" id="modal-comment-input" placeholder="Write a comment..." required>
+        <button type="submit" id="modal-btn-submit-comment" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/profile.js"></script>
+  <script src="/js/notifications.js"></script>
+</body>
+</html>

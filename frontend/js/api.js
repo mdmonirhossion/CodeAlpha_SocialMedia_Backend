@@ -44,11 +44,9 @@ async function apiFetch(endpoint, options = {}) {
     const response = await fetch(`${API_BASE}${endpoint}`, options);
     
     if (response.status === 401) {
-      // Token is invalid/expired - force logout
-      if (!window.location.pathname.includes('/login.html')) {
-        logout();
-        return;
-      }
+      // Token is invalid/expired - clear storage and force logout redirect
+      logout();
+      return { success: false, message: 'Session expired. Please log in again.' };
     }
     
     const result = await response.json();
@@ -65,7 +63,9 @@ async function apiFetch(endpoint, options = {}) {
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-  window.location.href = '/login.html';
+  if (!window.location.pathname.includes('/login.html')) {
+    window.location.href = '/login.html';
+  }
 }
 
 /**

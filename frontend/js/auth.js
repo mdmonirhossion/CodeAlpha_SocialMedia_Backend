@@ -267,12 +267,44 @@ document.addEventListener('DOMContentLoaded', () => {
         btnGoogleLogin.textContent = 'Connecting to Google...';
 
         try {
-          // Trigger Google sign-in redirect flow
-          await firebase.auth().signInWithRedirect(googleProvider);
+          // Use Popup flow to avoid Chrome Bounce Tracking warnings and page redirects
+          const result = await firebase.auth().signInWithPopup(googleProvider);
+          if (result && result.user) {
+            const firebaseUser = result.user;
+            const idToken = await firebaseUser.getIdToken();
+
+            const res = await apiFetch('/auth/google', {
+              method: 'POST',
+              body: {
+                idToken,
+                name: firebaseUser.displayName,
+                email: firebaseUser.email,
+                firebaseUid: firebaseUser.uid,
+                profilePic: firebaseUser.photoURL
+              }
+            });
+
+            if (res && res.success) {
+              localStorage.setItem('token', res.data.token);
+              localStorage.setItem('user', JSON.stringify({
+                _id: res.data._id,
+                name: res.data.name,
+                email: res.data.email,
+                bio: res.data.bio,
+                profilePic: res.data.profilePic,
+              }));
+              window.location.href = '/feed.html';
+              return;
+            } else {
+              loginError.innerText = res.message || 'Google sign-in verification failed on server.';
+              loginError.classList.remove('hidden');
+            }
+          }
         } catch (error) {
           console.error('Google Auth Error:', error);
           loginError.innerText = error.message || 'Google authentication encountered an error.';
           loginError.classList.remove('hidden');
+        } finally {
           btnGoogleLogin.disabled = false;
           btnGoogleLogin.textContent = 'Continue with Google';
         }
